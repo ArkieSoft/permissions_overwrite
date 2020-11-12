@@ -16,4 +16,10 @@
 	<dependencies>
 		<nextcloud min-version="19" max-version="21"/>
 	</dependencies>
+
+	<commands>
+		<command>OCA\PermissionsOverwrite\Command\SetCommand</command>
+		<command>OCA\PermissionsOverwrite\Command\ListCommand</command>
+		<command>OCA\PermissionsOverwrite\Command\RemoveCommand</command>
+	</commands>
 </info>
