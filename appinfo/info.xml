@@ -9,7 +9,10 @@
 	<licence>agpl</licence>
 	<author>Robin Appelman</author>
 	<namespace>PermissionsOverwrite</namespace>
-	<default_enable/>
+
+	<types>
+		<filesystem/>
+	</types>
 
 	<bugs>https://github.com/icewind1991/permissions_overwrite/issues</bugs>
 

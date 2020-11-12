@@ -39,7 +39,8 @@ class OverwriteStorageWrapper extends Wrapper {
 	}
 
 	public function getPermissions($path) {
-		if ($overwrite = $this->manager->getOverwrite($this->mountId, $path)) {
+		$overwrite = $this->manager->getOverwrite($this->mountId, $path);
+		if ($overwrite !== null) {
 			return $overwrite;
 		}
 
@@ -70,7 +71,8 @@ class OverwriteStorageWrapper extends Wrapper {
 		$data = parent::getMetaData($path);
 
 		if ($data && isset($data['permissions'])) {
-			if ($overwrite = $this->manager->getOverwrite($this->mountId, $path)) {
+			$overwrite = $this->manager->getOverwrite($this->mountId, $path);
+			if ($overwrite !== null) {
 				$data['scan_permissions'] = isset($data['scan_permissions']) ? $data['scan_permissions'] : $data['permissions'];
 				$data['permissions'] = $overwrite;
 			}
