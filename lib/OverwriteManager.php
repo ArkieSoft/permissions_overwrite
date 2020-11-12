@@ -76,4 +76,23 @@ class OverwriteManager {
 			->andWhere($query->expr()->eq('path_hash', $query->createNamedParameter(md5($path))));
 		$query->execute();
 	}
+
+	public function getAll(): array {
+		$query = $this->connection->getQueryBuilder();
+
+		$query->select('mount_id', 'path', 'permissions')
+			->from('permissions_overwrite');
+
+		$result = $query->execute();
+
+		$mounts = [];
+		while ($row = $result->fetch()) {
+			if (!isset($mounts[$row['mount_id']])) {
+				$mounts[$row['mount_id']] = [];
+			}
+			$mounts[$row['mount_id']][$row['path']] = $row['permissions'];
+		}
+
+		return $mounts;
+	}
 }
