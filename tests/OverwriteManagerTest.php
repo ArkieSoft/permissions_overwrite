@@ -40,6 +40,20 @@ class OverwriteManagerTest extends TestCase {
 		$this->assertEquals(null, $manager->getOverwrite(1, 'foobar2'));
 	}
 
+	public function testSetGetForMount() {
+		/** @var OverwriteManager $manager */
+		$manager = \OC::$server->query(OverwriteManager::class);
+		$manager->setOverwrite(1, 'foobar', 12);
+		$manager->setOverwrite(1, '', 1);
+		$manager->setOverwrite(1, 'test', 2);
+
+		$this->assertEquals([
+			'' => 1,
+			'foobar' => 12,
+			'test' => 2
+		], $manager->getOverwritesForMount(1));
+	}
+
 	public function testSetOverwrite() {
 		/** @var OverwriteManager $manager */
 		$manager = \OC::$server->query(OverwriteManager::class);

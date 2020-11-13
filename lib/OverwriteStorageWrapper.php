@@ -27,19 +27,16 @@ use OC\Files\Storage\Wrapper\Wrapper;
 use OCP\Constants;
 
 class OverwriteStorageWrapper extends Wrapper {
-	/** @var OverwriteManager */
-	private $manager;
-	/** @var int */
-	private $mountId;
+	/** @var OverwriteSet */
+	private $overwrites;
 
 	public function __construct($parameters) {
 		parent::__construct($parameters);
-		$this->manager = $parameters['manager'];
-		$this->mountId = $parameters['mount_id'];
+		$this->overwrites = $parameters['overwrites'];
 	}
 
 	public function getPermissions($path) {
-		$overwrite = $this->manager->getOverwrite($this->mountId, $path);
+		$overwrite = $this->overwrites->getOverwriteForPath($path);
 		if ($overwrite !== null) {
 			return $overwrite;
 		}
@@ -71,7 +68,7 @@ class OverwriteStorageWrapper extends Wrapper {
 		$data = parent::getMetaData($path);
 
 		if ($data && isset($data['permissions'])) {
-			$overwrite = $this->manager->getOverwrite($this->mountId, $path);
+			$overwrite = $this->overwrites->getOverwriteForPath($path);
 			if ($overwrite !== null) {
 				$data['scan_permissions'] = isset($data['scan_permissions']) ? $data['scan_permissions'] : $data['permissions'];
 				$data['permissions'] = $overwrite;
@@ -85,6 +82,6 @@ class OverwriteStorageWrapper extends Wrapper {
 			$storage = $this;
 		}
 		$sourceCache = parent::getCache($path, $storage);
-		return new OverwriteCacheWrapper($sourceCache, $this->manager, $this->mountId);
+		return new OverwriteCacheWrapper($sourceCache, $this->overwrites);
 	}
 }

@@ -26,6 +26,7 @@ namespace OCA\PermissionsOverwrite\AppInfo;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Storage;
 use OCA\PermissionsOverwrite\OverwriteManager;
+use OCA\PermissionsOverwrite\OverwriteSet;
 use OCA\PermissionsOverwrite\OverwriteStorageWrapper;
 use OCP\AppFramework\App;
 use OCP\Files\Mount\IMountPoint;
@@ -44,13 +45,14 @@ class Application extends App {
 	}
 
 	public function setupStorageWrapper() {
-		Filesystem::addStorageWrapper('permissions_overwrite', function ($mountPoint, Storage $storage, IMountPoint $mount) {
+		Filesystem::addStorageWrapper('permissions_overwrite', function (string $mountPoint, Storage $storage, IMountPoint $mount) {
 			if ($mount->getMountId()) {
+				/** @var OverwriteManager $manager */
 				$manager = $this->getContainer()->query(OverwriteManager::class);
+				$overwrites = new OverwriteSet($manager->getOverwritesForMount($mount->getMountId()));
 				return new OverwriteStorageWrapper([
 					'storage' => $storage,
-					'manager' => $manager,
-					'mount_id' => $mount->getMountId()
+					'overwrites' => $overwrites,
 				]);
 			} else {
 				return $storage;

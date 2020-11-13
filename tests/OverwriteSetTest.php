@@ -21,27 +21,30 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\PermissionsOverwrite;
+namespace OCA\PermissionsOverwrite\Tests;
 
-use OC\Files\Cache\Wrapper\CacheWrapper;
-use OCP\Files\Cache\ICache;
+use OCA\PermissionsOverwrite\OverwriteSet;
+use Test\TestCase;
 
-class OverwriteCacheWrapper extends CacheWrapper {
-	protected $overwrites;
+class OverwriteSetTest extends TestCase {
+	public function testSet() {
+		$overwrites = [
+			'test/bar/asd' => 5,
+			'foo' => 1,
+			'foobar' => 2,
+			'test' => 3,
+			'test/bar' => 4,
+		];
+		$set = new OverwriteSet($overwrites);
 
-	public function __construct(ICache $cache, OverwriteSet $overwrites) {
-		parent::__construct($cache);
-		$this->overwrites = $overwrites;
-	}
+		$this->assertEquals(null, $set->getOverwriteForPath(''));
+		$this->assertEquals(null, $set->getOverwriteForPath('nonmatching'));
 
-	protected function formatCacheEntry($entry) {
-		if (isset($entry['permissions'])) {
-			$overwrite = $this->overwrites->getOverwriteForPath($entry['path']);
-			if ($overwrite !== null) {
-				$entry['scan_permissions'] = $entry['permissions'];
-				$entry['permissions'] = $overwrite;
-			}
-		}
-		return $entry;
+		$this->assertEquals(1, $set->getOverwriteForPath('foo'));
+		$this->assertEquals(1, $set->getOverwriteForPath('foo/sub'));
+
+		$this->assertEquals(2, $set->getOverwriteForPath('foobar'));
+
+		$this->assertEquals(5, $set->getOverwriteForPath('test/bar/asd'));
 	}
 }

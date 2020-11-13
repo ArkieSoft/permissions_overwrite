@@ -1,8 +1,15 @@
 # permissions_overwrite
 
-Allow overwriting external storage permissions
+Allow overwriting external storage permissions.
+
+This app allows overwriting what Nextcloud thinks the permission of a file or folder in an external storage is,
+this can be useful in situations where Nextcloud improperly detects the permissions in an external storage.
+
+This only affects what Nextcloud detects the permissions to be, the actual permissions from the external server still apply as normal.
 
 ## Usage
+
+### Set a new overwrite
 
 ```bash
 occ permissions_overwrite:set <mount_id> <path> <ALL|READONLY|NONE>
@@ -22,4 +29,18 @@ $ occ files_external:list                                                       
 
 $ occ permissions_overwrite:set 17 Camera READONLY
 
+```
+
+Note that permission overwrites are recursive.
+
+### Remove an overwrite
+
+```bash
+occ permissions_overwrite:remove <mount_id> <path>
+```
+
+### List existing overwrites
+
+```bash
+occ permissions_overwrite:list
 ```

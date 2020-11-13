@@ -45,6 +45,15 @@ class OverwriteManager {
 		return $permissions === false ? null : (int)$permissions;
 	}
 
+	public function getOverwritesForMount(int $mountId): array {
+		$query = $this->connection->getQueryBuilder();
+
+		$query->select('path', 'permissions')
+			->from('permissions_overwrite')
+			->where($query->expr()->eq('mount_id', $query->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)));
+		return array_column($query->execute()->fetchAll(\PDO::FETCH_NUM), 1, 0);
+	}
+
 	public function setOverwrite(int $mountId, string $path, int $permissions) {
 		$query = $this->connection->getQueryBuilder();
 

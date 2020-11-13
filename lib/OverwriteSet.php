@@ -23,25 +23,33 @@ declare(strict_types=1);
 
 namespace OCA\PermissionsOverwrite;
 
-use OC\Files\Cache\Wrapper\CacheWrapper;
-use OCP\Files\Cache\ICache;
+class OverwriteSet {
+	private $overwrites;
 
-class OverwriteCacheWrapper extends CacheWrapper {
-	protected $overwrites;
+	public function __construct(array $overwrites) {
+		$paths = array_keys($overwrites);
+		$permissions = array_values($overwrites);
+		$paths = array_map(function ($path) {
+			return $path . '/';
+		}, $paths);
+		$overwrites = array_combine($paths, $permissions);
 
-	public function __construct(ICache $cache, OverwriteSet $overwrites) {
-		parent::__construct($cache);
+		ksort($overwrites);
+
 		$this->overwrites = $overwrites;
 	}
 
-	protected function formatCacheEntry($entry) {
-		if (isset($entry['permissions'])) {
-			$overwrite = $this->overwrites->getOverwriteForPath($entry['path']);
-			if ($overwrite !== null) {
-				$entry['scan_permissions'] = $entry['permissions'];
-				$entry['permissions'] = $overwrite;
+	public function getOverwriteForPath(string $path): ?int {
+		$path = trim($path, '/') . '/';
+		$overwrite = null;
+
+		// note that because the overwrites are sorted by path, later matching iterations are always subfolders of the previous match
+		foreach($this->overwrites as $overwritePath => $permission) {
+			if (strpos($path, $overwritePath) === 0) {
+				$overwrite = $permission;
 			}
 		}
-		return $entry;
+
+		return $overwrite;
 	}
 }
