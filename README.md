@@ -20,7 +20,7 @@ You can find the `mount_id` using `occ files_external:list`.
 For example, to set the folder `Camera` in the storage mounted at `/Pictures` to read only:
 
 ```bash
-$ occ files_external:list                                                                                                                                                     360ms  do 12 nov 2020 20:26:07 CET
+$ occ files_external:list
 +----------+-------------+---------+---------------------+------------------------------------+---------+------------------+-------------------+
 | Mount ID | Mount Point | Storage | Authentication Type | Configuration                      | Options | Applicable Users | Applicable Groups |
 +----------+-------------+---------+---------------------+------------------------------------+---------+------------------+-------------------+
