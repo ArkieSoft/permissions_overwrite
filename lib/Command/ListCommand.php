@@ -71,6 +71,8 @@ class ListCommand extends Base {
 			return array_combine($paths, $permissions);
 		}, $overwrites);
 
-		return $this->writeArrayInOutputFormat($input, $output, $overwrites);
+		$this->writeArrayInOutputFormat($input, $output, $overwrites);
+
+		return 0;
 	}
 }

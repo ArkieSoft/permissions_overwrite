@@ -61,5 +61,7 @@ class RemoveCommand extends Base {
 		$path = trim($path, '/');
 
 		$this->overwriteManager->removeOverwrite($mountId, $path);
+
+		return 0;
 	}
 }

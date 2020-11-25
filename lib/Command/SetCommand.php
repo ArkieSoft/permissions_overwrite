@@ -103,6 +103,7 @@ class SetCommand extends Base {
 		}
 
 		$this->overwriteManager->setOverwrite($mountId, $path, $permissions);
+
 		return 0;
 	}
 }
