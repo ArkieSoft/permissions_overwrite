@@ -5,7 +5,7 @@
 	<name>Permissions Overwrite</name>
 	<summary>Allow overwriting external storage permissions</summary>
 	<description><![CDATA[Allow overwriting external storage permissions.]]></description>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<licence>agpl</licence>
 	<author>Robin Appelman</author>
 	<namespace>PermissionsOverwrite</namespace>
