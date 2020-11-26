@@ -17,23 +17,23 @@ class Version001000Date20201112164405 extends SimpleMigrationStep {
 
 		if (!$schema->hasTable('permissions_overwrite')) {
 			$table = $schema->createTable('permissions_overwrite');
-			$table->addColumn('id', Types::BIGINT, [
+			$table->addColumn('id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 64,
 			]);
-			$table->addColumn('mount_id', Types::INTEGER, [
+			$table->addColumn('mount_id', 'integer', [
 				'notnull' => true,
 			]);
-			$table->addColumn('path', Types::TEXT, [
+			$table->addColumn('path', 'text', [
 				'notnull' => false,
 				'length' => 64,
 			]);
-			$table->addColumn('path_hash', Types::STRING, [
+			$table->addColumn('path_hash', 'string', [
 				'notnull' => true,
 				'length' => 32,
 			]);
-			$table->addColumn('permissions', Types::INTEGER, [
+			$table->addColumn('permissions', 'integer', [
 				'notnull' => true,
 			]);
 			$table->setPrimaryKey(['id']);
