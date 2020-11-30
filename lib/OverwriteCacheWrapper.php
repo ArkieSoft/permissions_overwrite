@@ -35,7 +35,7 @@ class OverwriteCacheWrapper extends CacheWrapper {
 	}
 
 	protected function formatCacheEntry($entry) {
-		if (isset($entry['permissions'])) {
+		if (isset($entry['permissions']) && isset($entry['path'])) {
 			$overwrite = $this->overwrites->getOverwriteForPath($entry['path']);
 			if ($overwrite !== null) {
 				$entry['scan_permissions'] = $entry['permissions'];

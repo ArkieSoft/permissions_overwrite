@@ -51,7 +51,10 @@ class OverwriteManager {
 		$query->select('path', 'permissions')
 			->from('permissions_overwrite')
 			->where($query->expr()->eq('mount_id', $query->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)));
-		return array_column($query->execute()->fetchAll(\PDO::FETCH_NUM), 1, 0);
+		$overwrites = array_column($query->execute()->fetchAll(\PDO::FETCH_NUM), 1, 0);
+		return array_map(function($permission) {
+			return (int)$permission;
+		}, $overwrites);
 	}
 
 	public function setOverwrite(int $mountId, string $path, int $permissions) {
@@ -99,7 +102,7 @@ class OverwriteManager {
 			if (!isset($mounts[$row['mount_id']])) {
 				$mounts[$row['mount_id']] = [];
 			}
-			$mounts[$row['mount_id']][$row['path']] = $row['permissions'];
+			$mounts[$row['mount_id']][$row['path']] = (int)$row['permissions'];
 		}
 
 		return $mounts;

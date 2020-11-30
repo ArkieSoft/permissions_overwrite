@@ -45,7 +45,7 @@ class OverwriteSet {
 
 		// note that because the overwrites are sorted by path, later matching iterations are always subfolders of the previous match
 		foreach($this->overwrites as $overwritePath => $permission) {
-			if (strpos($path, $overwritePath) === 0) {
+			if ($overwritePath === '/' || strpos($path, $overwritePath) === 0) {
 				$overwrite = $permission;
 			}
 		}
