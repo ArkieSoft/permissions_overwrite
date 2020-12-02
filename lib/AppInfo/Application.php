@@ -25,11 +25,14 @@ namespace OCA\PermissionsOverwrite\AppInfo;
 
 use OC\Files\Filesystem;
 use OC\Files\Storage\Storage;
+use OCA\Files_External\Lib\PersonalMount;
+use OCA\Files_External\Service\UserGlobalStoragesService;
 use OCA\PermissionsOverwrite\OverwriteManager;
 use OCA\PermissionsOverwrite\OverwriteSet;
 use OCA\PermissionsOverwrite\OverwriteStorageWrapper;
 use OCP\AppFramework\App;
 use OCP\Files\Mount\IMountPoint;
+use OCP\IUserSession;
 
 class Application extends App {
 	public const APP_ID = 'permissions_overwrite';
@@ -44,12 +47,34 @@ class Application extends App {
 		\OCP\Util::connectHook('OC_Filesystem', 'preSetup', $this, 'setupStorageWrapper');
 	}
 
+	private function getMountIdForMountpoint(string $mountPoint): ?int {
+		/** @var UserGlobalStoragesService $storageService */
+		$storageService = $this->getContainer()->query(UserGlobalStoragesService::class);
+		/** @var IUserSession $userSession */
+		$userSession = $this->getContainer()->query(IUserSession::class);
+		$user = $userSession->getUser();
+		foreach ($storageService->getAllStoragesForUser($user) as $storageConfig) {
+			$storageMountPoint = rtrim('/' . $user->getUID() . '/files' . $storageConfig->getMountPoint()) . '/';
+			if ($storageMountPoint === $mountPoint) {
+				return $storageConfig->getId();
+			}
+		}
+
+		return null;
+	}
+
 	public function setupStorageWrapper() {
 		Filesystem::addStorageWrapper('permissions_overwrite', function (string $mountPoint, Storage $storage, IMountPoint $mount) {
-			if ($mount->getMountId()) {
+			$mountId = $mount->getMountId();
+			// work around mount id not being set on personal mounts
+			if ($mountId === null && $mount instanceof PersonalMount) {
+				$mountId = $this->getMountIdForMountpoint($mount->getMountPoint());
+			}
+
+			if ($mountId) {
 				/** @var OverwriteManager $manager */
 				$manager = $this->getContainer()->query(OverwriteManager::class);
-				$overwrites = new OverwriteSet($manager->getOverwritesForMount($mount->getMountId()));
+				$overwrites = new OverwriteSet($manager->getOverwritesForMount($mountId));
 				return new OverwriteStorageWrapper([
 					'storage' => $storage,
 					'overwrites' => $overwrites,
