@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace OCA\PermissionsOverwrite\Command;
 
-
 use OC\Core\Command\Base;
 use OC\Files\Filesystem;
 use OCA\Files_External\NotFoundException;

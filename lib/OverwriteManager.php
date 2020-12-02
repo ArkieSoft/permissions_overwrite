@@ -52,7 +52,7 @@ class OverwriteManager {
 			->from('permissions_overwrite')
 			->where($query->expr()->eq('mount_id', $query->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)));
 		$overwrites = array_column($query->execute()->fetchAll(\PDO::FETCH_NUM), 1, 0);
-		return array_map(function($permission) {
+		return array_map(function ($permission) {
 			return (int)$permission;
 		}, $overwrites);
 	}
