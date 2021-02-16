@@ -5,7 +5,7 @@
 	<name>Permissions Overwrite</name>
 	<summary>Allow overwriting external storage permissions</summary>
 	<description><![CDATA[Allow overwriting external storage permissions.]]></description>
-	<version>0.1.3</version>
+	<version>0.1.4</version>
 	<licence>agpl</licence>
 	<author>Robin Appelman</author>
 	<namespace>PermissionsOverwrite</namespace>
@@ -17,7 +17,7 @@
 	<bugs>https://github.com/icewind1991/permissions_overwrite/issues</bugs>
 
 	<dependencies>
-		<nextcloud min-version="19" max-version="20"/>
+		<nextcloud min-version="20" max-version="21"/>
 	</dependencies>
 
 	<commands>
