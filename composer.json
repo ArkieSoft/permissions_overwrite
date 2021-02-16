@@ -8,7 +8,7 @@
 		"nextcloud/coding-standard": "^0.4.0",
 		"psalm/phar": "^4.3",
 		"doctrine/dbal": "3.0.0",
-		"phpunit/phpunit": "9.5.2"
+		"phpunit/phpunit": "^8"
 	},
 	"license": "AGPLv3",
 	"authors": [
