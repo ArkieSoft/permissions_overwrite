@@ -53,6 +53,9 @@ class Application extends App {
 		/** @var IUserSession $userSession */
 		$userSession = $this->getContainer()->query(IUserSession::class);
 		$user = $userSession->getUser();
+		if ($user === null) {
+			return null;
+		}
 		foreach ($storageService->getAllStoragesForUser($user) as $storageConfig) {
 			$storageMountPoint = rtrim('/' . $user->getUID() . '/files' . $storageConfig->getMountPoint()) . '/';
 			if ($storageMountPoint === $mountPoint) {
