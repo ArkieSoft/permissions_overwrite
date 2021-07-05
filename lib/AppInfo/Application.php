@@ -31,19 +31,23 @@ use OCA\PermissionsOverwrite\OverwriteManager;
 use OCA\PermissionsOverwrite\OverwriteSet;
 use OCA\PermissionsOverwrite\OverwriteStorageWrapper;
 use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\Files\Mount\IMountPoint;
 use OCP\IUserSession;
 
-class Application extends App {
+class Application extends App implements IBootstrap {
 	public const APP_ID = 'permissions_overwrite';
 
 	public function __construct() {
 		parent::__construct(self::APP_ID);
-
-		$this->setup();
 	}
 
-	public function setup() {
+	public function register(IRegistrationContext $context): void {
+	}
+
+	public function boot(IBootContext $context): void {
 		\OCP\Util::connectHook('OC_Filesystem', 'preSetup', $this, 'setupStorageWrapper');
 	}
 
