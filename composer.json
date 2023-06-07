@@ -1,13 +1,12 @@
 {
 	"type": "project",
 	"require-dev": {
-		"php-parallel-lint/php-parallel-lint": "^1.0.0",
 		"phpunit/phpunit": "^8",
-		"nextcloud/coding-standard": "^0.4.0",
+		"nextcloud/coding-standard": "^v1.1.1",
 		"nextcloud/ocp": "dev-master",
 		"psalm/phar": "^4.3",
 		"psr/cache": "^1.0.1",
-		"doctrine/dbal": "3.3.8"
+		"doctrine/dbal": "3.6.3"
 	},
 	"license": "AGPLv3",
 	"require": {},
